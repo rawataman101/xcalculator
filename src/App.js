@@ -21,10 +21,13 @@ export default function App() {
       setResult("Error");
     }
   };
+  const handleInput = (e) => {
+    setExp(e.target.value);
+  };
   return (
     <div className="App">
       <h1>React Calculator</h1>
-      <p className="exp">{exp}</p>
+      <input type="text" value={exp} onChange={(e) => handleInput(e)} />
       {hasResult && <p className="result">{result}</p>}
       <Grid container spacing={2} className="grid">
         <Grid item xs={3} className="grid__item">
