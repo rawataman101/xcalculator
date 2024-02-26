@@ -17,13 +17,12 @@ export default function App() {
   };
   const handleResult = () => {
     try {
-      console.log(result);
       const calculatedResult = evaluate(exp);
       setResult(calculatedResult.toString());
       setHasResult(true);
     } catch (error) {
       if (error.name === "SyntaxError" || error.name === "TypeError") {
-        setResult("Incomplete expression");
+        setResult("Error");
       } else {
         setResult("Error");
       }
