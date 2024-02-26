@@ -1,11 +1,14 @@
 import "./index.css";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
+import { evaluate } from "mathjs";
 
 export default function App() {
   const [exp, setExp] = useState("");
   const [result, setResult] = useState("");
   const [hasResult, setHasResult] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
   const handleClick = (value) => {
     setExp((pre) => pre + value);
   };
@@ -15,10 +18,17 @@ export default function App() {
   };
   const handleResult = () => {
     try {
-      setResult(eval(exp).toString());
+      const calculatedResult = evaluate(exp);
+      setResult(calculatedResult.toString());
       setHasResult(true);
+      setHasError(false);
     } catch (error) {
-      setResult("Error");
+      if (error.name === "SyntaxError") {
+        setResult("Incomplete expression");
+      } else {
+        setResult("Error");
+      }
+      setHasError(true);
     }
   };
   const handleInput = (e) => {
@@ -27,7 +37,7 @@ export default function App() {
   return (
     <div className="App">
       <h1>React Calculator</h1>
-      <input type="text" value={exp} onChange={(e) => handleInput(e)} />
+      <input type="text" value={exp} onChange={(e) => handleInput()} />
       {hasResult && <p className="result">{result}</p>}
       <Grid container spacing={2} className="grid">
         <Grid item xs={3} className="grid__item">
